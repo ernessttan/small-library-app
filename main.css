@@ -1,0 +1,16 @@
+:root {
+    --main-ff: 'Poppins', sans-serif;
+}
+
+body {
+    font-family: var(--main-ff);
+    padding: 0px 20px 0px 20px;
+}
+
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
