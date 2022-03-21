@@ -23,9 +23,36 @@
         </div>
     </div>
 </header>
+<div class="modal" id="add-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close-modal">&times;</button>  
+        </div>
+        <div class="modal-body">
+            <label>Book Title</label>
+            <input type="text" id="title-entry" >
+            <label>Author</label>
+            <input type="text" id="author-entry">
+            <label>Number of Pages</label>
+            <input type="number" id="page-entry">  
+            <label>Have you read it?</label> 
+            <div class="radio-container">
+                <label>I've Read It</label>
+                <input type="radio" id="read-entry" value="read">
+                <label>Not Yet</label>
+                <input type="radio" id="read-entry" value="not">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="save-btn">Save</button>
+        </div>
+    </div>
+</div>
 <main>
-    <section id="my-books">
+    <section id="library-feed">
         <h2>Your Books</h2>
+        <div class="books-grid">
+        </div>
     </section>
 </main>
 <script src="/app.js"></script>
