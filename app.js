@@ -117,6 +117,13 @@ function displayBooks(library) {
             cardRead.textContent = "Not Read";
             cardRead.classList.toggle("not");
         }
+        cardRead.addEventListener("click", function(e) {
+            e.preventDefault();
+            // e.target.classList.remove("read")
+            // e.target.classList.add("not");
+            let id = this.parentNode.parentNode.id
+            changeReadStatus(id, e.target);
+        });
 
     }
 }
@@ -125,6 +132,24 @@ function displayBooks(library) {
 function deleteBook(id) {
     myLibrary.splice(id, 1);
     displayBooks(myLibrary);
+}
+
+// Function to change read status
+function changeReadStatus(id, button) {
+    let bookToChange = myLibrary[id];
+
+    if(bookToChange.isRead === true) {
+        bookToChange.isRead = false;
+        button.classList.remove("read");
+        button.classList.add("not");
+        button.textContent = "Not Read";
+    } else if(bookToChange.isRead === false) {
+        bookToChange.isRead = true;
+        button.classList.remove("not");
+        button.classList.add("read");
+        button.textContent = "Read";
+    }
+
 }
 
 addButton.addEventListener("click", function(e) {
