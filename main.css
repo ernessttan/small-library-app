@@ -95,6 +95,16 @@ button {
     flex-direction: row;
     justify-content: flex-end;
 }
+
+/*--------------------------------------------------------------
+# Header
+--------------------------------------------------------------*/
+#add-btn {
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
 /*--------------------------------------------------------------
 # Library Feed
 --------------------------------------------------------------*/
@@ -126,7 +136,7 @@ button {
     font-size: 20px;
 }
 .card-body {
-    max-height: 60%;
+    height: 60%;
 }
 
 .card-footer {
@@ -134,9 +144,22 @@ button {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    max-height: 30%;
+    height: 30%;
 }
 
 .read-btn {
     padding: 10px 20px 10px 20px;
+    color: white;
+    border-radius: 8px;
+    font-weight: 600;
+    flex: 0.4;
+}
+
+.read-btn.read {
+    background-color: green;
+   
+}
+
+.read-btn.not {
+    background-color: red;
 }

@@ -1,21 +1,9 @@
-// function Book (title, author, pages, read) {
-//     this.title = title;
-//     this.author = author;
-//     this.pages = pages;
-//     this.read = read
-//     this.info = function() {
-//         return `${title} by ${author}, ${pages} pages, ${read}`;
-//     }
-// }
-
-// const theHobbit = new Book('The Hobbit', 'J.R.R Tolkien', 295, 'not read yet');
-// console.log(theHobbit.info());
-
 const libraryFeed = document.getElementById("library-feed");
 const booksGrid = document.querySelector(".books-grid");
 const addButton = document.getElementById("add-btn");
 const addModal = document.getElementById("add-modal");
 const closeModal = document.querySelector(".close-modal");
+const saveBook = document.querySelector(".save-btn");
 
 
 // Books will be stored here
@@ -24,41 +12,53 @@ let myLibrary = [
         title: "The Hobbit",
         author: "J.R.R Tolkien",
         pages: 295,
-        read: false
+        isRead: false
     },
     {
         title: "Star Wars",
         author: "George Lucas",
         pages: 295,
-        read: true
+        isRead: true
     },
     {
         title: "Charlie and The Chocolate Factory",
         author: "Roald Dahl",
         pages: 420,
-        read: true
+        isRead: true
     }
 ]
 
 // Book Constructor
-function Book() {
-
+function Book(title, author, pages, isRead) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.isRead = isRead
 }
 
 // Function to add book to library
 function addBookToLibrary() {
+    const bookTitle = document.getElementById("title-entry").value;
+    const bookAuthor = document.getElementById("author-entry").value;
+    const bookPages = document.getElementById("page-entry").value;
+    const isRead = document.getElementById("read").checked;
+
+    console.log(isRead);
+
+    const newBook = new Book(bookTitle, bookAuthor, bookPages, isRead);
+    myLibrary.push(newBook);
+
 }
 
 // Function to display all books
 function displayBooks(library) {
- 
+    booksGrid.innerHTML = '';
     for(let i = 0; i < library.length; i++) {
         let book = library[i];
-
-
         // BOOK CARD
         let bookCard = document.createElement("div");
         bookCard.classList.add("card");
+        bookCard.setAttribute("id", i)
         booksGrid.appendChild(bookCard);
 
         // CARD HEADER CONTAINER
@@ -71,6 +71,11 @@ function displayBooks(library) {
         deleteButton.setAttribute("type", "text");
         deleteButton.classList.add("delete-btn");
         deleteButton.innerHTML = "&times;";
+        deleteButton.addEventListener("click", function(e) {
+            e.preventDefault();
+            let id = this.parentNode.parentNode.id
+            deleteBook(id);
+        });
         cardHeader.appendChild(deleteButton);
 
         // CARD BODY CONTAINER
@@ -105,7 +110,21 @@ function displayBooks(library) {
         let cardRead = document.createElement("button");
         cardRead.classList.add("read-btn");
         cardFooter.appendChild(cardRead);
+        if(book.isRead === true) {
+            cardRead.textContent = "Read"
+            cardRead.classList.toggle("read");
+        } else if (book.isRead === false) {
+            cardRead.textContent = "Not Read";
+            cardRead.classList.toggle("not");
+        }
+
     }
+}
+
+// Function to delete a book
+function deleteBook(id) {
+    myLibrary.splice(id, 1);
+    displayBooks(myLibrary);
 }
 
 addButton.addEventListener("click", function(e) {
@@ -117,5 +136,15 @@ closeModal.addEventListener("click", function(e) {
     e.preventDefault();
     addModal.classList.toggle("active");
 });
+
+saveBook.addEventListener("click", function(e) {
+    e.preventDefault();
+    addBookToLibrary();
+    addModal.classList.toggle("active");
+    displayBooks(myLibrary);
+});
+
+
+
 
 displayBooks(myLibrary);
