@@ -41,6 +41,10 @@ button {
     background-color: transparent;
 }
 
+input {
+    padding: 5px;
+}
+
 .container {
     display: flex;
     flex-direction: row;
@@ -75,7 +79,7 @@ button {
     border-radius: 8px;
 }
 
-.close-modal {
+.close-modal,.delete-btn {
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -107,7 +111,7 @@ button {
     padding: 7px 10px 7px 10px;
 }
 
-#add-btn:focus {
+#add-btn:hover {
     background-color: black;
     color: white;
 }
@@ -176,4 +180,20 @@ button {
 
 .read-btn.not {
     background-color: red;
+}
+
+/*--------------------------------------------------------------
+# Add Book
+--------------------------------------------------------------*/
+.save-btn {
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid black;
+    padding: 7px 10px 7px 10px;
+    font-weight: 600;
+}
+
+.save-btn:hover {
+    background-color: black;
+    color: white;
 }

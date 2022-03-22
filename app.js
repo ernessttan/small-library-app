@@ -149,7 +149,6 @@ function changeReadStatus(id, button) {
         button.classList.add("read");
         button.textContent = "Read";
     }
-
 }
 
 addButton.addEventListener("click", function(e) {
