@@ -17,8 +17,10 @@ A simple library app that lets you keep track of your books
 - ### Learning outcomes
 - How to use CSS grid to create a card gallery
 - How to toggle classes
+- Learned how to use localStorage
+- Used modules, IIFEs and arrow functions
 
 ### What I plan to do next
 - Add drag and drop functionality for books to change status
 - Add more details to book information
-- Use ```localStorage``` for app
+
