@@ -102,7 +102,7 @@ const library = (() => {
             }
             cardRead.addEventListener("click", (e) => {
                 e.preventDefault();
-                let id = this.parentNode.parentNode.id
+                let id = cardRead.parentNode.parentNode.id
                 changeReadStatus(id, e.target);
             });
         });
@@ -125,11 +125,13 @@ const changeReadStatus = (id, button) => {
 
     if(bookToChange.isRead === true) {
         bookToChange.isRead = false;
+        localStorage.setItem('library', JSON.stringify(myLibrary))
         button.classList.remove("read");
         button.classList.add("not");
         button.textContent = "Not Read";
     } else if(bookToChange.isRead === false) {
         bookToChange.isRead = true;
+        localStorage.setItem('library', JSON.stringify(myLibrary))
         button.classList.remove("not");
         button.classList.add("read");
         button.textContent = "Read";
