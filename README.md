@@ -13,7 +13,8 @@ A simple library app that lets you keep track of your books
 - Visual Studio Code
 - Linux Terminal
 - Git and Github
-- ###Learning outcomes
+
+- ### Learning outcomes
 - How to use CSS grid to create a card gallery
 - How to toggle classes
 
