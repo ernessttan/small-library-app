@@ -7,49 +7,41 @@ const saveBook = document.querySelector(".save-btn");
 
 
 // Books will be stored here
-let myLibrary = [
-    {
-        title: "The Hobbit",
-        author: "J.R.R Tolkien",
-        pages: 295,
-        isRead: false
-    },
-    {
-        title: "Star Wars",
-        author: "George Lucas",
-        pages: 295,
-        isRead: true
-    },
-    {
-        title: "Charlie and The Chocolate Factory",
-        author: "Roald Dahl",
-        pages: 420,
-        isRead: true
-    }
-]
+let myLibrary = localStorage.getItem('library')
 
-const book = (title, author, pages, isRead) => {
-    return {title, author, pages, isRead}
+if (localStorage.getItem('library')) {
+    myLibrary = JSON.parse(localStorage.getItem('library'))
+} else {
+    myLibrary = []
+}
+
+localStorage.setItem('library', JSON.stringify(myLibrary))
+const bookData = JSON.parse(localStorage.getItem('library'));
+
+const book = (id, title, author, pages, isRead) => {
+    return {id, title, author, pages, isRead}
 }
 
 const library = (() => {
     const addBook = () => {
+        let currentId = 3;
+        currentId++;
         const bookTitle = document.getElementById("title-entry").value;
         const bookAuthor = document.getElementById("author-entry").value;
         const bookPages = document.getElementById("page-entry").value;
         const isRead = document.getElementById("read").checked;
 
-        const newBook = book(bookTitle, bookAuthor, bookPages, isRead);
+        const newBook = book(currentId, bookTitle, bookAuthor, bookPages, isRead);
         myLibrary.push(newBook);
+        localStorage.setItem('library', JSON.stringify(myLibrary))
     }
-    const displayBooks = (library) => {
+    const displayBooks = () => {
         booksGrid.innerHTML = '';
-        for(let i = 0; i < library.length; i++) {
-            let book = library[i];
+        bookData.forEach((book) => {
             // BOOK CARD
             let bookCard = document.createElement("div");
             bookCard.classList.add("card");
-            bookCard.setAttribute("id", i)
+            bookCard.setAttribute("id", book.id)
             booksGrid.appendChild(bookCard);
     
             // CARD HEADER CONTAINER
@@ -62,10 +54,10 @@ const library = (() => {
             deleteButton.setAttribute("type", "text");
             deleteButton.classList.add("delete-btn");
             deleteButton.innerHTML = "&times;";
-            deleteButton.addEventListener("click", function(e) {
-                e.preventDefault();
-                let id = this.parentNode.parentNode.id
+            deleteButton.addEventListener("click", () => {
+                let id = deleteButton.parentNode.parentNode.id
                 deleteBook(id);
+                window.location.reload();
             });
             cardHeader.appendChild(deleteButton);
     
@@ -108,16 +100,17 @@ const library = (() => {
                 cardRead.textContent = "Not Read";
                 cardRead.classList.toggle("not");
             }
-            cardRead.addEventListener("click", function(e) {
+            cardRead.addEventListener("click", (e) => {
                 e.preventDefault();
                 let id = this.parentNode.parentNode.id
                 changeReadStatus(id, e.target);
             });
-        }
+        });
     };
     const deleteBook = (id) => {
         myLibrary.splice(id, 1);
-        library.displayBooks(myLibrary);
+        localStorage.setItem('library', JSON.stringify(myLibrary))
+        library.displayBooks();
     }
     return {
         addBook,
@@ -153,12 +146,12 @@ closeModal.addEventListener("click", (e) => {
     addModal.classList.toggle("active");
 });
 
-saveBook.addEventListener("click", (e) => {
-    e.preventDefault();
+saveBook.addEventListener("click", () => {
     library.addBook();
     addModal.classList.toggle("active");
     library.displayBooks(myLibrary);
+    window.location.reload();
 });
 
 
-library.displayBooks(myLibrary);
+library.displayBooks();
