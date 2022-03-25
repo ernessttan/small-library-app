@@ -7,41 +7,54 @@ const saveBook = document.querySelector(".save-btn");
 
 
 // Books will be stored here
-let myLibrary = localStorage.getItem('library')
+let myLibrary;
 
-if (localStorage.getItem('library')) {
-    myLibrary = JSON.parse(localStorage.getItem('library'))
-} else {
-    myLibrary = []
+const DEFAULT_LIBRARY = [
+    {
+        title: "The Hobbit",
+        author: "J.R.R Tolkien",
+        pages: 295,
+        isRead: false
+    },
+    {
+        title: "Star Wars",
+        author: "George Lucas",
+        pages: 295,
+        isRead: true
+    },
+    {
+        title: "Charlie and The Chocolate Factory",
+        author: "Roald Dahl",
+        pages: 420,
+        isRead: true
+    }
+]
+
+const book = (title, author, pages, isRead) => {
+    return {title, author, pages, isRead}
 }
 
-localStorage.setItem('library', JSON.stringify(myLibrary))
-const bookData = JSON.parse(localStorage.getItem('library'));
-
-const book = (id, title, author, pages, isRead) => {
-    return {id, title, author, pages, isRead}
-}
-
+/* Library Module */
 const library = (() => {
     const addBook = () => {
-        let currentId = 3;
-        currentId++;
         const bookTitle = document.getElementById("title-entry").value;
         const bookAuthor = document.getElementById("author-entry").value;
         const bookPages = document.getElementById("page-entry").value;
         const isRead = document.getElementById("read").checked;
 
-        const newBook = book(currentId, bookTitle, bookAuthor, bookPages, isRead);
+        const newBook = book(bookTitle, bookAuthor, bookPages, isRead);
         myLibrary.push(newBook);
-        localStorage.setItem('library', JSON.stringify(myLibrary))
+        storage.setItems();
     }
     const displayBooks = () => {
+        // Checks if localStorage has data if not defaults to DEFAULT_LIBRARY
+        storage.reload();
         booksGrid.innerHTML = '';
-        bookData.forEach((book) => {
+        myLibrary.forEach((book) => {
             // BOOK CARD
             let bookCard = document.createElement("div");
             bookCard.classList.add("card");
-            bookCard.setAttribute("id", book.id)
+            bookCard.setAttribute("id", myLibrary.indexOf(book));
             booksGrid.appendChild(bookCard);
     
             // CARD HEADER CONTAINER
@@ -109,34 +122,53 @@ const library = (() => {
     };
     const deleteBook = (id) => {
         myLibrary.splice(id, 1);
-        localStorage.setItem('library', JSON.stringify(myLibrary))
+        storage.setItems();
         library.displayBooks();
+    };
+    const changeReadStatus = (id, button) => {
+        let bookToChange = myLibrary[id];
+
+        if(bookToChange.isRead === true) {
+            bookToChange.isRead = false;
+            storage.setItems();
+            button.classList.remove("read");
+            button.classList.add("not");
+            button.textContent = "Not Read";
+        } else if(bookToChange.isRead === false) {
+            bookToChange.isRead = true;
+            storage.setItems();
+            button.classList.remove("not");
+            button.classList.add("read");
+            button.textContent = "Read";
+        }
     }
     return {
         addBook,
         displayBooks,
-        deleteBook
+        deleteBook,
+        changeReadStatus
     };
 })();
 
-// Function to change read status
-const changeReadStatus = (id, button) => {
-    let bookToChange = myLibrary[id];
-
-    if(bookToChange.isRead === true) {
-        bookToChange.isRead = false;
-        localStorage.setItem('library', JSON.stringify(myLibrary))
-        button.classList.remove("read");
-        button.classList.add("not");
-        button.textContent = "Not Read";
-    } else if(bookToChange.isRead === false) {
-        bookToChange.isRead = true;
-        localStorage.setItem('library', JSON.stringify(myLibrary))
-        button.classList.remove("not");
-        button.classList.add("read");
-        button.textContent = "Read";
+/* Storage Module */
+const storage = (() => {
+    const setItems = () => {
+        // Updates localStorage data
+        localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
+    };
+    const reload = () => {
+        if(localStorage.getItem("myLibrary")) {
+            // Retrives Data from localStorage
+            myLibrary = JSON.parse(localStorage.getItem("myLibrary"));
+        } else {
+            myLibrary = DEFAULT_LIBRARY;
+        }
+    };
+    return {
+        setItems,
+        reload
     }
-}
+})();
 
 addButton.addEventListener("click", (e) => {
     e.preventDefault();
@@ -154,6 +186,5 @@ saveBook.addEventListener("click", () => {
     library.displayBooks(myLibrary);
     window.location.reload();
 });
-
 
 library.displayBooks();
